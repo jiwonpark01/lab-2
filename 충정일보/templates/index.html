@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>충정일보</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="page">
+        <header class="site-header">
+            <div class="header-inner">
+                <p class="header-top">CHUNGJEONG DAILY</p>
+                <h1>충정일보</h1>
+                <p class="header-sub">지역과 시민을 잇는 디지털 뉴스 플랫폼</p>
+            </div>
+        </header>
+
+        <nav class="site-nav" aria-label="뉴스 카테고리">
+            <ul>
+                <li><a href="#">정치</a></li>
+                <li><a href="#">경제</a></li>
+                <li><a href="#">사회</a></li>
+                <li><a href="#">문화</a></li>
+                <li><a href="#">연예</a></li>
+                <li><a href="#">스포츠</a></li>
+            </ul>
+        </nav>
+
+        <main class="news-layout">
+            <section class="hero-section" aria-labelledby="hero-title">
+                <h2 id="hero-title" class="section-title">메인 기사</h2>
+                <div id="headlineArea"></div>
+            </section>
+
+            <section class="editor-section" aria-labelledby="editor-title">
+                <h2 id="editor-title" class="section-title">에디터 픽</h2>
+                <div class="editor-grid">
+                    <article class="mini-card">
+                        <span class="mini-badge">기획</span>
+                        <h3>충청권 산업 변화, 지역 일자리에 미치는 영향</h3>
+                        <p>지역 기반 산업 재편과 청년 일자리 연결 구조를 짚어본다.</p>
+                    </article>
+                    <article class="mini-card">
+                        <span class="mini-badge">분석</span>
+                        <h3>교통 인프라 확장 이후 생활권 변화</h3>
+                        <p>광역 교통망 확장이 시민의 이동과 상권에 미친 영향을 정리했다.</p>
+                    </article>
+                    <article class="mini-card">
+                        <span class="mini-badge">이슈</span>
+                        <h3>봄철 지역 축제 경쟁, 무엇이 달라졌나</h3>
+                        <p>각 지자체의 축제 전략과 체류형 콘텐츠 흐름을 살펴본다.</p>
+                    </article>
+                    <article class="mini-card">
+                        <span class="mini-badge">현장</span>
+                        <h3>학교 앞 안전구역 점검, 시민 반응은</h3>
+                        <p>실제 통학 환경과 정책 체감도를 현장 중심으로 담았다.</p>
+                    </article>
+                </div>
+            </section>
+
+            <aside class="sidebar-section">
+                <section class="rank-box">
+                    <h2 class="section-title">많이 본 기사</h2>
+                    <ol class="rank-list">
+                        <li>지역 경제 회복 정책 본격 추진</li>
+                        <li>프로야구 개막전 열기 고조</li>
+                        <li>봄 축제 개막, 시민 발길 이어져</li>
+                        <li>지방의회 개편안 논의 본격화</li>
+                        <li>신작 드라마 첫 방송 화제</li>
+                    </ol>
+                </section>
+
+                <section class="submit-box">
+                    <h2 class="section-title">기사 송고</h2>
+                    <form id="newsForm">
+                        <label for="title">기사 제목</label>
+                        <input type="text" id="title" name="title" required>
+
+                        <label for="category">카테고리</label>
+                        <select id="category" name="category" required>
+                            <option value="">선택하세요</option>
+                            <option value="정치">정치</option>
+                            <option value="경제">경제</option>
+                            <option value="사회">사회</option>
+                            <option value="문화">문화</option>
+                            <option value="연예">연예</option>
+                            <option value="스포츠">스포츠</option>
+                        </select>
+
+                        <label for="content">기사 본문</label>
+                        <textarea id="content" name="content" rows="8" required></textarea>
+
+                        <label for="author">기자 이름</label>
+                        <input type="text" id="author" name="author" required>
+
+                        <button type="submit">기사 등록</button>
+                    </form>
+                    <p id="formMessage"></p>
+                </section>
+            </aside>
+
+            <section class="bottom-section" aria-labelledby="bottom-title">
+                <h2 id="bottom-title" class="section-title">카테고리 뉴스</h2>
+                <div class="bottom-grid">
+                    <article class="bottom-card">
+                        <span class="mini-badge">정치</span>
+                        <h3>지방 행정 개편 논의, 생활 정책 중심으로 재편</h3>
+                    </article>
+                    <article class="bottom-card">
+                        <span class="mini-badge">경제</span>
+                        <h3>전통시장 디지털 전환, 상인 교육 확대</h3>
+                    </article>
+                    <article class="bottom-card">
+                        <span class="mini-badge">문화</span>
+                        <h3>지역 청년 예술가 지원 프로그램 확대</h3>
+                    </article>
+                    <article class="bottom-card">
+                        <span class="mini-badge">스포츠</span>
+                        <h3>시민 체육시설 개선으로 생활체육 활성화 기대</h3>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <p>Copyright 2026 충정일보</p>
+        </footer>
+    </div>
+
+    <script>
+        async function loadnews() {
+            try {
+                const res = await fetch('/news/list');
+                const data = await res.json();
+
+                const tbody = document.getElementById('headlineArea');
+                tbody.innerHTML = '';
+
+                for (const item of data) {
+                    tbody.innerHTML += `
+                        <article class="headline-card">
+                            <span class="headline-category">${item.category}</span>
+                            <h3>${item.title}</h3>
+                            <p class="headline-summary">${item.content}</p>
+                            <p class="headline-author">기자: ${item.author}</p>
+                        </article>
+                    `;
+                }
+            } catch (err) {
+                console.error(err);
+                alert('렌더링 실패');
+            }
+        }
+
+        const newsForm = document.getElementById('newsForm');
+
+        newsForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const newsData = {
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                content: document.getElementById('content').value,
+                author: document.getElementById('author').value,
+            };
+
+            try {
+                const response = await fetch('/news/create', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newsData)
+                });
+
+                loadnews();
+                
+            } catch (error) {
+                console.error(error);
+                resultBox.style.display = 'block';
+                resultBox.className = 'result-box error';
+                resultBox.textContent = '서버 통신 중 오류가 발생했습니다.';
+            }
+        });
+
+        loadnews();
+    </script>
+</body>
+</html>
